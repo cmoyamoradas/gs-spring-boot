@@ -51,7 +51,7 @@ pipeline {
                     buildName: JOB_NAME,
                     buildNumber: BUILD_ID,
                     // Obtain an Artifactory server instance, defined in Jenkins --> Manage Jenkins --> Configure System:
-                    serverId: SERVER_ID
+                    serverId: SERVER_ID,
                     //specPath: 'jenkins-examples/pipeline-examples/resources/props-upload.json'
                     spec: '''{
                               "files": [
