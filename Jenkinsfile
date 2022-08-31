@@ -24,15 +24,6 @@ pipeline {
                 )
             }
         }
-        stage (''){
-            steps {
-                sh "pwd"
-                dir('your-sub-directory') {
-                  sh "pwd"
-                }
-                sh "pwd"
-            }
-        }
         stage('Compile') {
             steps {
                 echo 'Compiling'
@@ -41,10 +32,12 @@ pipeline {
                 }
             }
         }
-        /*
+
         stage('Package') {
             steps {
-                sh 'mvn package spring-boot:repackage -DskipTests -Dcheckstyle.skip'
+                dir('complete') {
+                    sh 'mvn package spring-boot:repackage -DskipTests -Dcheckstyle.skip'
+                }
             }
         }
         stage ('Ping to Artifactory') {
@@ -52,14 +45,16 @@ pipeline {
                sh 'jf rt ping --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
-        steps {
-            rtUpload (
-                buildName: JOB_NAME,
-                buildNumber: BUILD_ID,
-                // Obtain an Artifactory server instance, defined in Jenkins --> Manage Jenkins --> Configure System:
-                serverId: SERVER_ID
-                //specPath: 'jenkins-examples/pipeline-examples/resources/props-upload.json'
-            )
+        stage ('Upload artifact') {
+            steps {
+                rtUpload (
+                    buildName: JOB_NAME,
+                    buildNumber: BUILD_ID,
+                    // Obtain an Artifactory server instance, defined in Jenkins --> Manage Jenkins --> Configure System:
+                    serverId: SERVER_ID
+                    //specPath: 'jenkins-examples/pipeline-examples/resources/props-upload.json'
+                )
+            }
         }
         stage ('Publish build info') {
             steps {
@@ -120,6 +115,5 @@ pipeline {
                )
            }
        }
-    */
     }
 }
