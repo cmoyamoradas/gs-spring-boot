@@ -36,8 +36,9 @@ pipeline {
         stage('Compile') {
             steps {
                 echo 'Compiling'
-                sh "pwd"
-                sh 'mvn clean test-compile -Dcheckstyle.skip -DskipTests'
+                dir('complete') {
+                    sh 'mvn clean test-compile -Dcheckstyle.skip -DskipTests'
+                }
             }
         }
         /*
