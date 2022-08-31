@@ -57,11 +57,11 @@ pipeline {
                               "files": [
                                 {
                                   "pattern": "**/target/*.jar",
-                                  "target": "ARTIFACTORY_LOCAL_DEV_REPO"
+                                  "target": "demo-maven-dev-local"
                                 },
                                 {
                                   "pattern": "**/target/*.pom",
-                                  "target": "ARTIFACTORY_LOCAL_DEV_REPO"
+                                  "target": "demo-maven-dev-local"
                                 }
                              ]
                         }'''
