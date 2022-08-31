@@ -67,10 +67,7 @@ pipeline {
         }
         stage ('Approve Release for Staging') {
             steps {
-                input {
-                    message "Are we good to go to Staging?"
-                    ok "Yes"
-                }
+                input message: "Are we good to go to Staging?"
             }
         }
         stage ('Release for Staging') {
@@ -94,10 +91,7 @@ pipeline {
         }
        stage ('Approve Release for Production') {
            steps {
-               input {
-                   message "Are we good to go to Production?"
-                   ok "Yes"
-               }
+               input message: "Are we good to go to Production?"
            }
        }
        stage ('Release for Production') {
