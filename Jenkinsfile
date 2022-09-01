@@ -7,24 +7,13 @@ pipeline {
         ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
         ARTIFACTORY_LOCAL_STAGING_REPO = 'demo-maven-staging-local'
         ARTIFACTORY_LOCAL_PROD_REPO = 'demo-maven-prod-local'
-        CREDENTIALS = 'Artifactoryk8s'
         SERVER_ID = 'k8s'
-        promotion = true
     }
     tools {
         maven "maven-3.6.3"
     }
 
     stages {
-        stage ('Artifactory configuration') {
-            steps {
-                rtServer (
-                    id: SERVER_ID,
-                    url: RT_URL,
-                    credentialsId: CREDENTIALS
-                )
-            }
-        }
         stage ('Config JFrgo CLI') {
             steps {
                 sh 'jf c add ${SERVER_ID} --interactive=false --overwrite=true --access-token=${TOKEN} --url=${JURL}'
@@ -70,17 +59,6 @@ pipeline {
                 sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
             }
         }
-        /*
-        stage ('Publish build info') {
-            steps {
-                rtPublishBuildInfo (
-                    buildName: JOB_NAME,
-                    buildNumber: BUILD_ID,
-                    serverId: SERVER_ID
-                )
-            }
-        }
-        */
         stage ('Approve Release for Staging') {
             steps {
                 input message: "Are we good to go to Staging?"
@@ -91,27 +69,6 @@ pipeline {
                 sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO}'
             }
         }
-        /*
-        stage ('Release for Staging') {
-            steps {
-                println "Release for Staging approved"
-                rtPromote (
-                    //Mandatory parameter
-                    serverId: SERVER_ID,
-                    targetRepo: ARTIFACTORY_LOCAL_STAGING_REPO,
-                    //Optional parameters
-                    buildName: JOB_NAME,
-                    buildNumber: BUILD_ID,
-                    comment: 'We are good for Staging',
-                    sourceRepo: ARTIFACTORY_LOCAL_DEV_REPO,
-                    status: 'Staging',
-                    includeDependencies: false,
-                    failFast: true
-                    //copy: true
-                )
-            }
-        }
-        */
        stage ('Approve Release for Production') {
            steps {
                input message: "Are we good to go to Production?"
@@ -122,26 +79,5 @@ pipeline {
                sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO}'
            }
        }
-       /*
-       stage ('Release for Production') {
-           steps {
-               println "Release for Production approved"
-               rtPromote (
-                   //Mandatory parameter
-                   serverId: SERVER_ID,
-                   targetRepo: ARTIFACTORY_LOCAL_PROD_REPO,
-                   //Optional parameters
-                   buildName: JOB_NAME,
-                   buildNumber: BUILD_ID,
-                   comment: 'We are good to go to Production',
-                   sourceRepo: ARTIFACTORY_LOCAL_STAGING_REPO,
-                   status: 'Production',
-                   includeDependencies: false,
-                   failFast: true
-                   //copy: true
-               )
-           }
-       }
-       */
     }
 }
