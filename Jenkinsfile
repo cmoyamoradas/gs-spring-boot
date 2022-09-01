@@ -86,7 +86,7 @@ pipeline {
         }
         stage ('Release for Staging') {
             steps {
-                sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging ${JOB_NAME} ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO}'
+                sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO}'
             }
         }
         /*
@@ -117,7 +117,7 @@ pipeline {
        }
        stage ('Release for Production') {
            steps {
-               sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production ${JOB_NAME} ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO}'
+               sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO}'
            }
        }
        /*
