@@ -24,25 +24,24 @@ pipeline {
                 )
             }
         }
+        stage ('Ping to Artifactory') {
+            steps {
+               sh 'jf rt ping --url ${RT_URL} --access-token ${TOKEN}'
+            }
+        }
+        stage ('Config Maven'){
+            steps {
+                dir('complete'){
+                    sh 'jf mvnc --repo-resolve-releases demo-maven-virtual --repo-resolve-snapshots demo-maven-virtual --repo-deploy-releases demo-maven-virtual --repo-deploy-snapshots demo-maven-virtual'
+                }
+            }
+        }
         stage('Compile') {
             steps {
                 echo 'Compiling'
                 dir('complete') {
-                    sh 'mvn clean test-compile -Dcheckstyle.skip -DskipTests'
+                    sh 'jf mvn clean test-compile -Dcheckstyle.skip -DskipTests'
                 }
-            }
-        }
-
-        stage('Package') {
-            steps {
-                dir('complete') {
-                    sh 'mvn package spring-boot:repackage -DskipTests -Dcheckstyle.skip'
-                }
-            }
-        }
-        stage ('Ping to Artifactory') {
-            steps {
-               sh 'jf rt ping --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
         stage ('Upload artifact') {
