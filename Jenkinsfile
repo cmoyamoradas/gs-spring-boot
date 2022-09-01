@@ -45,31 +45,6 @@ pipeline {
                sh 'jf rt ping --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
-        /*
-        stage ('Upload artifact') {
-            steps {
-                rtUpload (
-                    buildName: JOB_NAME,
-                    buildNumber: BUILD_ID,
-                    // Obtain an Artifactory server instance, defined in Jenkins --> Manage Jenkins --> Configure System:
-                    serverId: SERVER_ID,
-                    //specPath: 'jenkins-examples/pipeline-examples/resources/props-upload.json'
-                    spec: '''{
-                              "files": [
-                                {
-                                  "pattern": "**/target/*.jar",
-                                  "target": "demo-maven-dev-local"
-                                },
-                                {
-                                  "pattern": "**/target/*.pom",
-                                  "target": "demo-maven-dev-local"
-                                }
-                             ]
-                        }'''
-                )
-            }
-        }
-        */
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
