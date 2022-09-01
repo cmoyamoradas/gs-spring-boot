@@ -54,7 +54,7 @@ pipeline {
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
-                    sh 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name=${JOB_NAME} --build-number=${BUILD_ID}'
+                    sh 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
                 }
             }
         }
