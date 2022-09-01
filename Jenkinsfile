@@ -32,7 +32,7 @@ pipeline {
         stage ('Config Maven'){
             steps {
                 dir('complete'){
-                    sh 'jf mvnc --repo-resolve-releases demo-maven-virtual --repo-resolve-snapshots demo-maven-virtual --repo-deploy-releases demo-maven-virtual --repo-deploy-snapshots demo-maven-virtual'
+                    sh 'jf mvnc --repo-resolve-releases demo-maven-virtual --repo-resolve-snapshots demo-maven-virtual --repo-deploy-releases demo-maven-virtual --repo-deploy-snapshots demo-maven-virtual --url ${RT_URL} --access-token ${TOKEN}'
                 }
             }
         }
@@ -40,14 +40,14 @@ pipeline {
             steps {
                 echo 'Compiling'
                 dir('complete') {
-                    sh 'jf mvn clean test-compile -Dcheckstyle.skip -DskipTests'
+                    sh 'jf mvn clean test-compile -Dcheckstyle.skip -DskipTests --url ${RT_URL} --access-token ${TOKEN}'
                 }
             }
         }
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
-                    sh 'jf mvn clean install'
+                    sh 'jf mvn clean install --url ${RT_URL} --access-token ${TOKEN}'
                 }
             }
         }
