@@ -61,11 +61,11 @@ pipeline {
         stage ('Publish build info') {
             steps {
                 // Collect environment variables for the build
-                sh 'jf rt bce --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
+                sh 'jf rt bce ${JOB_NAME} ${BUILD_ID}'
                 //Collect VCS details from git and add them to the build
-                sh 'jf rt bag --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
+                sh 'jf rt bag ${JOB_NAME} ${BUILD_ID}'
                 //Publish build info
-                sh 'jf rt bp --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
+                sh 'jf rt bp ${JOB_NAME} ${BUILD_ID}'
             }
         }
         /*
