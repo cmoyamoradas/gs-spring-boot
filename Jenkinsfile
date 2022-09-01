@@ -60,6 +60,17 @@ pipeline {
         }
         stage ('Publish build info') {
             steps {
+                // Collect environment variables for the build
+                sh 'jf rt bce'
+                //Collect VCS details from git and add them to the build
+                sh 'jf rt bag'
+                //Publish build info
+                sh 'jf rt bp'
+            }
+        }
+        /*
+        stage ('Publish build info') {
+            steps {
                 rtPublishBuildInfo (
                     buildName: JOB_NAME,
                     buildNumber: BUILD_ID,
@@ -67,6 +78,7 @@ pipeline {
                 )
             }
         }
+        */
         stage ('Approve Release for Staging') {
             steps {
                 input message: "Are we good to go to Staging?"
