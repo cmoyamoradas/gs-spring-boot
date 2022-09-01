@@ -97,7 +97,7 @@ pipeline {
                     comment: 'We are good for Staging',
                     sourceRepo: ARTIFACTORY_LOCAL_DEV_REPO,
                     status: 'Staging',
-                    includeDependencies: true,
+                    includeDependencies: false,
                     failFast: true
                     //copy: true
                 )
@@ -121,7 +121,7 @@ pipeline {
                    comment: 'We are good to go to Production',
                    sourceRepo: ARTIFACTORY_LOCAL_STAGING_REPO,
                    status: 'Production',
-                   includeDependencies: true,
+                   includeDependencies: false,
                    failFast: true
                    //copy: true
                )
