@@ -45,6 +45,7 @@ pipeline {
                sh 'jf rt ping --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
+        /*
         stage ('Upload artifact') {
             steps {
                 rtUpload (
@@ -66,6 +67,14 @@ pipeline {
                              ]
                         }'''
                 )
+            }
+        }
+        */
+        stage ('Upload artifact') {
+            steps {
+                dir('complete') {
+                    sh 'mvn deploy -DskipTests -Dcheckstyle.skip'
+                }
             }
         }
         stage ('Publish build info') {
