@@ -27,7 +27,7 @@ pipeline {
         }
         stage ('Config JFrgo CLI') {
             steps {
-                sh 'jf c add --interactive false --access-token ${TOKEN} --url ${JURL} ${SERVER_ID}'
+                sh 'jf c add ${SERVER_ID} --interactive false --access-token ${TOKEN} --url ${JURL}'
                 sh 'jf config use ${SERVER_ID}'
             }
         }
