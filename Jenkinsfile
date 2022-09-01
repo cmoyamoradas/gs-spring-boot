@@ -27,7 +27,7 @@ pipeline {
         }
         stage ('Config JFrgo CLI') {
             steps {
-                sh 'jf c add ${SERVER_ID} --interactive false --access-token ${TOKEN} --url ${JURL}'
+                sh 'jf c edit ${SERVER_ID} --interactive=false --access-token=${TOKEN} --url=${JURL}'
                 sh 'jf config use ${SERVER_ID}'
             }
         }
@@ -39,7 +39,7 @@ pipeline {
         stage ('Config Maven'){
             steps {
                 dir('complete'){
-                    sh 'jf mvnc --repo-resolve-releases demo-maven-virtual --repo-resolve-snapshots demo-maven-virtual --repo-deploy-releases demo-maven-virtual --repo-deploy-snapshots demo-maven-virtual'
+                    sh 'jf mvnc --repo-resolve-releases=demo-maven-virtual --repo-resolve-snapshots=demo-maven-virtual --repo-deploy-releases=demo-maven-virtual --repo-deploy-snapshots=demo-maven-virtual'
                 }
             }
         }
