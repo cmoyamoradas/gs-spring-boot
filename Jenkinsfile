@@ -66,6 +66,8 @@ pipeline {
                 sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID}'
                 //Publish build info
                 sh 'jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
+                //Promote the build
+                sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
             }
         }
         /*
