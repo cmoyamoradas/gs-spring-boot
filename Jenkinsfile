@@ -48,7 +48,7 @@ pipeline {
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
-                    sh 'mvn deploy -DskipTests -Dcheckstyle.skip'
+                    sh 'jf mvn clean install'
                 }
             }
         }
