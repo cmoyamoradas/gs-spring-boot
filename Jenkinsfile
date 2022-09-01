@@ -65,7 +65,7 @@ pipeline {
                 //Collect VCS details from git and add them to the build
                 sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID}'
                 //Publish build info
-                sh 'jf rt bp "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
             }
         }
         /*
