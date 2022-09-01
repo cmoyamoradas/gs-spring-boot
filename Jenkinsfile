@@ -86,6 +86,12 @@ pipeline {
         }
         stage ('Release for Staging') {
             steps {
+                sh 'jf rt bpr ${JOB_NAME} ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO} --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging'
+            }
+        }
+        /*
+        stage ('Release for Staging') {
+            steps {
                 println "Release for Staging approved"
                 rtPromote (
                     //Mandatory parameter
@@ -103,11 +109,18 @@ pipeline {
                 )
             }
         }
+        */
        stage ('Approve Release for Production') {
            steps {
                input message: "Are we good to go to Production?"
            }
        }
+       stage ('Release for Production') {
+           steps {
+               sh 'jf rt bpr ${JOB_NAME} ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO} --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production'
+           }
+       }
+       /*
        stage ('Release for Production') {
            steps {
                println "Release for Production approved"
@@ -127,5 +140,6 @@ pipeline {
                )
            }
        }
+       */
     }
 }
