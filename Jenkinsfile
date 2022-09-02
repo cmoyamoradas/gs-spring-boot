@@ -7,6 +7,7 @@ pipeline {
         ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
         ARTIFACTORY_LOCAL_STAGING_REPO = 'demo-maven-staging-local'
         ARTIFACTORY_LOCAL_PROD_REPO = 'demo-maven-prod-local'
+        CREDENTIALS = 'Artifactoryk8s'
         SERVER_ID = 'k8s'
         ARTIFACTORY_DOCKER_REGISTRY = '10.186.0.21/docker-local'
         DOCKER_REPOSITORY = 'docker-local'
@@ -16,7 +17,15 @@ pipeline {
     tools {
         maven "maven-3.6.3"
     }
-
+    stage ('Artifactory configuration') {
+        steps {
+            rtServer (
+                id: SERVER_ID,
+                url: RT_URL,
+                credentialsId: CREDENTIALS
+            )
+        }
+    }
     stages {
         stage ('Config JFrgo CLI') {
             agent any
@@ -82,12 +91,25 @@ pipeline {
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
+        stage('Scan build') {
+            agent any
+            steps {
+                xrayScan (
+                    serverId: SERVER_ID,
+                    buildName: JOB_NAME,
+                    buildNumber: BUILD_ID,
+                    failBuild: false
+                )
+            }
+        }
+        /*
         stage ('Scan build') {
             agent any
             steps {
                 sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
         }
+        */
         stage ('Approve Release for Staging') {
             options {
                 timeout(time: 5, unit: 'MINUTES')
