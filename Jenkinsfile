@@ -79,7 +79,7 @@ pipeline {
                 //Promote the build
                 sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
                 //Set properties to the files
-                sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
+                sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
         stage ('Approve Release for Staging') {
