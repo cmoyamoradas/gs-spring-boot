@@ -82,6 +82,12 @@ pipeline {
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
+        stage ('Scan build') {
+            agent any
+            steps {
+                sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
+            }
+        }
         stage ('Approve Release for Staging') {
             options {
                 timeout(time: 5, unit: 'MINUTES')
