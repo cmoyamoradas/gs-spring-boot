@@ -19,6 +19,7 @@ pipeline {
     }
     stages {
         stage ('Artifactory configuration') {
+            agent any
             steps {
                 rtServer (
                     id: SERVER_ID,
