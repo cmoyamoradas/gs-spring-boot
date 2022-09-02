@@ -69,7 +69,7 @@ pipeline {
         }
         stage ('Approve Release for Staging') {
             options {
-                timeout(time: 1, unit: 'MINUTES')
+                timeout(time: 5, unit: 'MINUTES')
             }
             steps {
                 input message: "Are we good to go to Staging?"
@@ -85,7 +85,7 @@ pipeline {
         }
        stage ('Approve Release for Production') {
            options {
-               timeout(time: 1, unit: 'MINUTES')
+               timeout(time: 5, unit: 'MINUTES')
            }
            steps {
                input message: "Are we good to go to Production?"
