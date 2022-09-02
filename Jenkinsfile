@@ -51,11 +51,13 @@ pipeline {
         stage('Package') {
             agent any
             steps {
+                dir('complete') {
                 //Before creating the docker image, we need to create the .jar file
-                sh 'mvn package spring-boot:repackage -DskipTests -Dcheckstyle.skip'
-                echo 'Create the Docker image'
-                script {
-                    docker.build(ARTIFACTORY_DOCKER_REGISTRY+'/'+IMAGE_NAME+':'+IMAGE_VERSION, '--build-arg JAR_FILE=target/*.jar .')
+                    sh 'jf mvn package spring-boot:repackage -DskipTests -Dcheckstyle.skip'
+                    echo 'Create the Docker image'
+                    script {
+                        docker.build(ARTIFACTORY_DOCKER_REGISTRY+'/'+IMAGE_NAME+':'+IMAGE_VERSION, '--build-arg JAR_FILE=target/*.jar .')
+                    }
                 }
             }
         }
