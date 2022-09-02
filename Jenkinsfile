@@ -64,7 +64,7 @@ pipeline {
         stage ('Push image to Artifactory') {
             agent any
             steps {
-                sh 'jf rt docker-push ${ARTIFACTORY_DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION} ${DOCKER_REPOSITORY} --build-name=${JOB_NAME} --build-number=${BUILD_ID} --url ${RT_URL} --access-token ${TOKEN}'
+                sh 'jf rt docker-push ${ARTIFACTORY_DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION} ${DOCKER_REPOSITORY} --build-name="${JOB_NAME}" --build-number=${BUILD_ID} --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
         stage ('Publish build info') {
