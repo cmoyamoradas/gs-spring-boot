@@ -63,6 +63,8 @@ pipeline {
                 sh 'jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
                 sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
+                //Set properties to the files
+                sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
         stage ('Approve Release for Staging') {
@@ -77,6 +79,8 @@ pipeline {
             agent any
             steps {
                 sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO}'
+                //Set properties to the files
+                sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Staging"'
             }
         }
        stage ('Approve Release for Production') {
@@ -91,6 +95,8 @@ pipeline {
            agent any
            steps {
                sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO}'
+               //Set properties to the files
+               sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Production"'
            }
        }
     }
