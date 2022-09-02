@@ -17,16 +17,16 @@ pipeline {
     tools {
         maven "maven-3.6.3"
     }
-    stage ('Artifactory configuration') {
-        steps {
-            rtServer (
-                id: SERVER_ID,
-                url: RT_URL,
-                credentialsId: CREDENTIALS
-            )
-        }
-    }
     stages {
+        stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: SERVER_ID,
+                    url: RT_URL,
+                    credentialsId: CREDENTIALS
+                )
+            }
+        }
         stage ('Config JFrgo CLI') {
             agent any
             steps {
