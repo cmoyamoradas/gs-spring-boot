@@ -83,11 +83,24 @@ pipeline {
                 sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Staging"'
             }
         }
+        /*
        stage ('Scan build') {
             //agent any
             steps {
                 sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
+       }
+       */
+       stage('Scan build') {
+           agent any
+           steps {
+               xrayScan (
+                   serverId: SERVER_ID,
+                   buildName: JOB_NAME,
+                   buildNumber: BUILD_ID,
+                   failBuild: false
+               )
+           }
        }
        stage ('Approve Release for Production') {
            options {
