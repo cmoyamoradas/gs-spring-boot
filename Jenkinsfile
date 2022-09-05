@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
     environment {
         JURL = 'http://10.186.0.21'
         RT_URL = 'http://10.186.0.21/artifactory'
@@ -15,20 +15,20 @@ pipeline {
 
     stages {
         stage ('Config JFrgo CLI') {
-            agent any
+            //agent any
             steps {
                 sh 'jf c add ${SERVER_ID} --interactive=false --overwrite=true --access-token=${TOKEN} --url=${JURL}'
                 sh 'jf config use ${SERVER_ID}'
             }
         }
         stage ('Ping to Artifactory') {
-            agent any
+            //agent any
             steps {
                sh 'jf rt ping'
             }
         }
         stage ('Config Maven'){
-            agent any
+            //agent any
             steps {
                 dir('complete'){
                     sh 'jf mvnc --repo-resolve-releases=demo-maven-virtual --repo-resolve-snapshots=demo-maven-virtual --repo-deploy-releases=demo-maven-virtual --repo-deploy-snapshots=demo-maven-virtual'
@@ -36,7 +36,7 @@ pipeline {
             }
         }
         stage('Compile') {
-            agent any
+            //agent any
             steps {
                 echo 'Compiling'
                 dir('complete') {
@@ -45,7 +45,7 @@ pipeline {
             }
         }
         stage ('Upload artifact') {
-            agent any
+            //agent any
             steps {
                 dir('complete') {
                     sh 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
@@ -53,7 +53,7 @@ pipeline {
             }
         }
         stage ('Publish build info') {
-            agent any
+            //agent any
             steps {
                 // Collect environment variables for the build
                 sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID}'
@@ -76,7 +76,7 @@ pipeline {
             }
         }
         stage ('Release for Staging') {
-            agent any
+            //agent any
             steps {
                 sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO}'
                 //Set properties to the files
@@ -84,7 +84,7 @@ pipeline {
             }
         }
        stage ('Scan build') {
-            agent any
+            //agent any
             steps {
                 sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
@@ -98,7 +98,7 @@ pipeline {
            }
        }
        stage ('Release for Production') {
-           agent any
+           //agent any
            steps {
                sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO}'
                //Set properties to the files
