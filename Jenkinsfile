@@ -86,7 +86,7 @@ pipeline {
        stage ('Scan build') {
             agent any
             steps {
-                sh 'jf bs --fail false "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
        }
        stage ('Approve Release for Production') {
