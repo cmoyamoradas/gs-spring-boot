@@ -83,14 +83,15 @@ pipeline {
                 sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Staging"'
             }
         }
-        /*
+
        stage ('Scan build') {
             //agent any
             steps {
+                sh 'set JFROG_CLI_LOG_LEVEL=DEBUG'
                 sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
        }
-       */
+       /*
        stage('Scan build') {
            agent any
            steps {
@@ -102,6 +103,7 @@ pipeline {
                )
            }
        }
+       */
        stage ('Approve Release for Production') {
            options {
                timeout(time: 5, unit: 'MINUTES')
