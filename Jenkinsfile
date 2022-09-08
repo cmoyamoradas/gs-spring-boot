@@ -87,8 +87,7 @@ pipeline {
        stage ('Scan build') {
             //agent any
             steps {
-                sh 'export JFROG_CLI_LOG_LEVEL=DEBUG'
-                sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
        }
        /*
