@@ -44,20 +44,20 @@ pipeline {
                 }
             }
         }
-        stage ('Scan build') {
-            //agent any
-            steps {
-                dir('complete'){
-                    sh 'echo pwd'
-                    sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf s target/spring-boot-complete-1.0.0.jar --watches "BuildWatch"'
-                }
-            }
-        }
+
         stage ('Upload artifact') {
             //agent any
             steps {
                 dir('complete') {
                     sh 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
+                }
+            }
+        }
+        stage ('Scan build') {
+        //agent any
+            steps {
+                dir('complete'){
+                    sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf s target/*.jar --watches "BuildWatch"'
                 }
             }
         }
