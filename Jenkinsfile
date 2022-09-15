@@ -44,6 +44,12 @@ pipeline {
                 }
             }
         }
+        stage ('Scan build') {
+            //agent any
+            steps {
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs "${JOB_NAME}" ${BUILD_ID}'
+            }
+        }
         stage ('Upload artifact') {
             //agent any
             steps {
@@ -84,25 +90,7 @@ pipeline {
             }
         }
 
-       stage ('Scan build') {
-            //agent any
-            steps {
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs "${JOB_NAME}" ${BUILD_ID}'
-            }
-       }
-       /*
-       stage('Scan build') {
-           agent any
-           steps {
-               xrayScan (
-                   serverId: SERVER_ID,
-                   buildName: JOB_NAME,
-                   buildNumber: BUILD_ID,
-                   failBuild: false
-               )
-           }
-       }
-       */
+
        stage ('Approve Release for Production') {
            options {
                timeout(time: 5, unit: 'MINUTES')
