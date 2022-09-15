@@ -48,6 +48,7 @@ pipeline {
             //agent any
             steps {
                 dir('complete'){
+                    sh 'echo pwd'
                     sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf s target/spring-boot-complete-1.0.0.jar --watches "BuildWatch"'
                 }
             }
