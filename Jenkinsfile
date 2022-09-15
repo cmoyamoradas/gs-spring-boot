@@ -47,7 +47,9 @@ pipeline {
         stage ('Scan build') {
             //agent any
             steps {
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs "${JOB_NAME}" ${BUILD_ID}'
+                dir('complete/target'){
+                    sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf s *.jar --watches "BuildWatch"'
+                }
             }
         }
         stage ('Upload artifact') {
