@@ -92,17 +92,6 @@ pipeline {
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
-        stage('Scan build') {
-            //agent any
-            steps {
-                xrayScan (
-                    serverId: SERVER_ID,
-                    buildName: JOB_NAME,
-                    buildNumber: BUILD_ID,
-                    failBuild: false
-                )
-            }
-        }
         /*
         stage ('Scan build') {
             agent any
@@ -125,6 +114,17 @@ pipeline {
                 sh 'jf rt bpr --status=Staging "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
                 //Set properties to the files
                 sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Staging"'
+            }
+        }
+        stage('Scan build') {
+            //agent any
+            steps {
+                xrayScan (
+                    serverId: SERVER_ID,
+                    buildName: JOB_NAME,
+                    buildNumber: BUILD_ID,
+                    failBuild: true
+                )
             }
         }
        stage ('Approve Release for Production') {
