@@ -62,10 +62,40 @@ pipeline {
                 sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
+        stage ('Approve Release for Staging') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
+            steps {
+                input message: "Are we good to go to Staging?"
+            }
+        }
+        stage ('Release for Staging') {
+            steps {
+                sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_DEV_REPO} --status=Staging "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_STAGING_REPO}'
+                //Set properties to the files
+                sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Staging"'
+            }
+        }
         stage ('Scan build') {
             steps {
                 sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs "${JOB_NAME}" ${BUILD_ID}'
             }
         }
+       stage ('Approve Release for Production') {
+           options {
+               timeout(time: 5, unit: 'MINUTES')
+           }
+           steps {
+               input message: "Are we good to go to Production?"
+           }
+       }
+       stage ('Release for Production') {
+           steps {
+               sh 'jf rt bpr --source-repo=${ARTIFACTORY_LOCAL_STAGING_REPO} --status=Production "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_PROD_REPO}'
+               //Set properties to the files
+               sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Production"'
+           }
+       }
     }
 }
