@@ -101,7 +101,7 @@ pipeline {
         }
         stage ('Scan build') {
             steps {
-                sh 'jf rt bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bs "${JOB_NAME}" ${BUILD_ID}'
             }
         }
        stage ('Approve Release for Production') {
