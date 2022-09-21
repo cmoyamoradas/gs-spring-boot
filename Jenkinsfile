@@ -19,7 +19,6 @@ pipeline {
     }
     stages {
         stage ('Artifactory configuration') {
-            //agent any
             steps {
                 rtServer (
                     id: SERVER_ID,
@@ -29,20 +28,17 @@ pipeline {
             }
         }
         stage ('Config JFrgo CLI') {
-            //agent any
             steps {
                 sh 'jf c add ${SERVER_ID} --interactive=false --overwrite=true --access-token=${TOKEN} --url=${JURL}'
                 sh 'jf config use ${SERVER_ID}'
             }
         }
         stage ('Ping to Artifactory') {
-            //agent any
             steps {
                sh 'jf rt ping'
             }
         }
         stage ('Config Maven'){
-            //agent any
             steps {
                 dir('complete'){
                     sh 'jf mvnc --repo-resolve-releases=demo-maven-virtual --repo-resolve-snapshots=demo-maven-virtual --repo-deploy-releases=demo-maven-virtual --repo-deploy-snapshots=demo-maven-virtual'
@@ -50,7 +46,6 @@ pipeline {
             }
         }
         stage('Compile') {
-            //agent any
             steps {
                 echo 'Compiling'
                 dir('complete') {
@@ -59,7 +54,6 @@ pipeline {
             }
         }
         stage('Package') {
-            //agent any
             steps {
                 dir('complete') {
                 //Before creating the docker image, we need to create the .jar file
@@ -72,13 +66,11 @@ pipeline {
             }
         }
         stage ('Push image to Artifactory') {
-            //agent any
             steps {
                 sh 'jf rt docker-push ${ARTIFACTORY_DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION} ${DOCKER_REPOSITORY} --build-name="${JOB_NAME}" --build-number=${BUILD_ID} --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
         stage ('Publish build info') {
-            //agent any
             steps {
                 // Collect environment variables for the build
                 sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID}'
@@ -92,14 +84,6 @@ pipeline {
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
-        /*
-        stage ('Scan build') {
-            agent any
-            steps {
-                sh 'jf bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
-            }
-        }
-        */
         stage ('Approve Release for Staging') {
             options {
                 timeout(time: 5, unit: 'MINUTES')
@@ -109,22 +93,15 @@ pipeline {
             }
         }
         stage ('Release for Staging') {
-            //agent any
             steps {
                 sh 'jf rt bpr --status=Staging "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
                 //Set properties to the files
                 sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Staging"'
             }
         }
-        stage('Scan build') {
-            //agent any
+        stage ('Scan build') {
             steps {
-                xrayScan (
-                    serverId: SERVER_ID,
-                    buildName: JOB_NAME,
-                    buildNumber: BUILD_ID,
-                    failBuild: true
-                )
+                sh 'jf rt bs --fail=false "${JOB_NAME}" ${BUILD_ID}'
             }
         }
        stage ('Approve Release for Production') {
@@ -136,7 +113,6 @@ pipeline {
            }
        }
        stage ('Release for Production') {
-           //agent any
            steps {
                sh 'jf rt bpr --status=Production "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
                //Set properties to the files
