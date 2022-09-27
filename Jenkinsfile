@@ -5,8 +5,6 @@ pipeline {
         RT_URL = 'http://10.186.0.21/artifactory'
         TOKEN = credentials('token')
         ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
-        ARTIFACTORY_LOCAL_STAGING_REPO = 'demo-maven-staging-local'
-        ARTIFACTORY_LOCAL_PROD_REPO = 'demo-maven-prod-local'
         SERVER_ID = 'k8s'
     }
     tools {
