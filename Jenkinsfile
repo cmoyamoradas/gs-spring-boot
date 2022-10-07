@@ -79,7 +79,7 @@ pipeline {
                 //Publish build info
                 sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL} --project=seals'
                 //Promote the build
-                sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY} --project=seals'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY} --project=seals'
                 //Set properties to the files
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
