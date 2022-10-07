@@ -4,13 +4,13 @@ pipeline {
         JURL = 'http://10.186.0.21'
         RT_URL = 'http://10.186.0.21/artifactory'
         TOKEN = credentials('token')
-        ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
-        ARTIFACTORY_LOCAL_STAGING_REPO = 'demo-maven-staging-local'
-        ARTIFACTORY_LOCAL_PROD_REPO = 'demo-maven-prod-local'
+        ARTIFACTORY_LOCAL_DEV_REPO = 'seals-dev-docker-local'
+        ARTIFACTORY_LOCAL_STAGING_REPO = 'seals-staging-docker-local'
+        ARTIFACTORY_LOCAL_PROD_REPO = 'seals-prod-docker-local'
         CREDENTIALS = 'Artifactoryk8s'
         SERVER_ID = 'k8s'
-        ARTIFACTORY_DOCKER_REGISTRY = '10.186.0.21/docker-local'
-        DOCKER_REPOSITORY = 'docker-local'
+        ARTIFACTORY_DOCKER_REGISTRY = '10.186.0.21/seals-dev-docker-local'
+        DOCKER_REPOSITORY = 'seals-dev-docker-local'
         IMAGE_NAME = 'gs-spring-boot'
         IMAGE_VERSION = '1.0.0'
     }
