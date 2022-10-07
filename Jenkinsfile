@@ -38,7 +38,6 @@ pipeline {
                 }
             }
         }
-
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
