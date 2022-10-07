@@ -73,20 +73,20 @@ pipeline {
         stage ('Publish build info') {
             steps {
                 // Collect environment variables for the build
-                sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bce --project=seals "${JOB_NAME}" ${BUILD_ID}'
                 //Collect VCS details from git and add them to the build
-                sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bag --project=seals "${JOB_NAME}" ${BUILD_ID}'
                 //Publish build info
-                sh 'jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
+                sh 'jf rt bp --project=seals "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
+                sh 'jf rt bpr --project=seals --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
                 //Set properties to the files
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
         stage ('Scan build') {
             steps {
-                sh 'jf rt bs "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bs --project=seals "${JOB_NAME}" ${BUILD_ID}'
             }
         }
     }
