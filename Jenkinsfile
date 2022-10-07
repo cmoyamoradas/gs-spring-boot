@@ -73,20 +73,20 @@ pipeline {
         stage ('Publish build info') {
             steps {
                 // Collect environment variables for the build
-                sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID} --project=seals'
+                sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID} --project=show'
                 //Collect VCS details from git and add them to the build
-                sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID} --project=seals'
+                sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID} --project=show'
                 //Publish build info
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL} --project=seals'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL} --project=show'
                 //Promote the build
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY} --project=seals'
+                //sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY} --project=seals'
                 //Set properties to the files
-                sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
+                //sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
         stage ('Scan build') {
             steps {
-                sh 'jf rt bs "${JOB_NAME}" ${BUILD_ID} --project=seals'
+                sh 'jf rt bs "${JOB_NAME}" ${BUILD_ID} --project=show'
             }
         }
     }
