@@ -77,9 +77,9 @@ pipeline {
                 //Collect VCS details from git and add them to the build
                 sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID} --project="seals"'
                 //Publish build info
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL} --project="seals"'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}"'
                 //Promote the build
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY} --project="seals"'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}"'
                 //Set properties to the files
                 sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
