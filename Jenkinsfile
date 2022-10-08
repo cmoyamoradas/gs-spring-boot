@@ -55,9 +55,7 @@ pipeline {
                 //Publish build info
                 sh 'jf rt bp "${BUILD_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                sh 'jf rt bpr --status=Development "${BUILD_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
-                //Set properties to the files
-                sh 'jf rt sp --build="${BUILD_NAME}"/${BUILD_ID} "status=Development"'
+                sh 'jf rt bpr --status=Development --props="status=Development" "${BUILD_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
             }
         }
     }
