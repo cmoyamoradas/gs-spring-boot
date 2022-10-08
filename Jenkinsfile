@@ -6,6 +6,7 @@ pipeline {
         TOKEN = credentials('token')
         ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
         SERVER_ID = 'k8s'
+        BUILD_NAME = "GS_SPRING_BOOT_main_mvn"
     }
     tools {
         maven "maven-3.6.3"
@@ -41,22 +42,22 @@ pipeline {
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
-                    sh 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${JOB_NAME}" --build-number=${BUILD_ID}'
+                    sh 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${BUILD_NAME}" --build-number=${BUILD_ID}'
                 }
             }
         }
         stage ('Publish build info') {
             steps {
                 // Collect environment variables for the build
-                sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bce "${BUILD_NAME}" ${BUILD_ID}'
                 //Collect VCS details from git and add them to the build
-                sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bag "${BUILD_NAME}" ${BUILD_ID}'
                 //Publish build info
-                sh 'jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
+                sh 'jf rt bp "${BUILD_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                sh 'jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
+                sh 'jf rt bpr --status=Development "${BUILD_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
                 //Set properties to the files
-                sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
+                sh 'jf rt sp --build="${BUILD_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
     }
