@@ -59,10 +59,5 @@ pipeline {
                 sh 'jf rt sp --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
             }
         }
-        stage ('Scan build') {
-            steps {
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs "${JOB_NAME}" ${BUILD_ID}'
-            }
-        }
     }
 }
