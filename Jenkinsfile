@@ -82,7 +82,7 @@ pipeline {
         }
         stage ('Scan build') {
             steps {
-                sh 'jf rt bs "${BUILD_NAME}" ${BUILD_ID}'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs "${BUILD_NAME}" ${BUILD_ID}'
             }
         }
     }
