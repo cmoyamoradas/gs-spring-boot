@@ -10,7 +10,7 @@ pipeline {
         DOCKER_REPOSITORY = 'demo-docker-local'
         IMAGE_NAME = 'gs-spring-boot'
         IMAGE_VERSION = '1.0.0'
-        BUILD_NAME = 'GS_SRPING_BOOT_docker'
+        BUILD_NAME = 'GS_SPRING_BOOT_docker'
     }
     tools {
         maven "maven-3.6.3"
