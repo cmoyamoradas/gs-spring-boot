@@ -10,6 +10,7 @@ pipeline {
         DOCKER_REPOSITORY = 'demo-docker-local'
         IMAGE_NAME = 'gs-spring-boot'
         IMAGE_VERSION = '1.0.0'
+        BUILD_NAME = 'GS_SRPING_BOOT_docker'
     }
     tools {
         maven "maven-3.6.3"
@@ -64,19 +65,19 @@ pipeline {
         }
         stage ('Push image to Artifactory') {
             steps {
-                sh 'jf rt docker-push ${ARTIFACTORY_DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION} ${DOCKER_REPOSITORY} --build-name="${JOB_NAME}" --build-number=${BUILD_ID} --url ${RT_URL} --access-token ${TOKEN}'
+                sh 'jf rt docker-push ${ARTIFACTORY_DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION} ${DOCKER_REPOSITORY} --build-name="${BUILD_NAME}" --build-number=${BUILD_ID} --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
         stage ('Publish build info') {
             steps {
                 // Collect environment variables for the build
-                sh 'jf rt bce "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bce "${BUILD_NAME}" ${BUILD_ID}'
                 //Collect VCS details from git and add them to the build
-                sh 'jf rt bag "${JOB_NAME}" ${BUILD_ID}'
+                sh 'jf rt bag "${BUILD_NAME}" ${BUILD_ID}'
                 //Publish build info
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${BUILD_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development --props="status=Development" "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development --props="status=Development" "${BUILD_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
             }
         }
         stage ('Scan build') {
