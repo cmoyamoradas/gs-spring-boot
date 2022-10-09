@@ -4,13 +4,10 @@ pipeline {
         JURL = 'http://10.186.0.21'
         RT_URL = 'http://10.186.0.21/artifactory'
         TOKEN = credentials('token')
-        ARTIFACTORY_LOCAL_DEV_REPO = 'seals-dev-docker-local'
-        ARTIFACTORY_LOCAL_STAGING_REPO = 'seals-staging-docker-local'
-        ARTIFACTORY_LOCAL_PROD_REPO = 'seals-prod-docker-local'
         CREDENTIALS = 'Artifactoryk8s'
         SERVER_ID = 'k8s'
-        ARTIFACTORY_DOCKER_REGISTRY = '10.186.0.21/seals-dev-docker-local'
-        DOCKER_REPOSITORY = 'seals-dev-docker-local'
+        ARTIFACTORY_DOCKER_REGISTRY = '10.186.0.21/demo-docker-local'
+        DOCKER_REPOSITORY = 'demo-docker-local'
         IMAGE_NAME = 'gs-spring-boot'
         IMAGE_VERSION = '1.0.0'
     }
@@ -79,9 +76,7 @@ pipeline {
                 //Publish build info
                 sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${JOB_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
-                //Set properties to the files
-                sh 'jf rt sp --include-dirs=true --build="${JOB_NAME}"/${BUILD_ID} "status=Development"'
+                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development --props="status=Development" "${JOB_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
             }
         }
         stage ('Scan build') {
