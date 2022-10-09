@@ -77,7 +77,7 @@ pipeline {
                 //Publish build info
                 sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bp "${BUILD_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development --props="status=Development" "${BUILD_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
+                //sh 'JFROG_CLI_LOG_LEVEL=DEBUG jf rt bpr --status=Development --props="status=Development" "${BUILD_NAME}" ${BUILD_ID} ${DOCKER_REPOSITORY}'
             }
         }
         stage ('Scan build') {
