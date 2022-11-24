@@ -5,7 +5,7 @@ resources:
           # SCM integration where the repository is located
           gitProvider: MyGithub
           # Repository path, including org name/repo name
-          path: ~cmoyamoradas/gs-spring-boot
+          path: cmoyamoradas/gs-spring-boot
           branches:
               # Specifies which branches will trigger dependent steps
               include: main-mvn
