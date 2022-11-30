@@ -1,11 +1,11 @@
 pipeline {
     agent any
     environment {
-        JURL = 'http://10.186.0.21'
-        RT_URL = 'http://10.186.0.21/artifactory'
-        TOKEN = credentials('token')
+        JURL = 'http://jfrog.trickynickel.org'
+        RT_URL = 'http://jfrog.trickynickel.org/artifactory'
+        TOKEN = credentials('artifactory-gke-token')
         ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
-        SERVER_ID = 'k8s'
+        SERVER_ID = 'gke'
         BUILD_NAME = "GS_SPRING_BOOT_main_mvn"
     }
     tools {
