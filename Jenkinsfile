@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         JURL = 'http://jfrog.trickynickel.org'
-        RT_URL = 'http://jfrog.trickynickel/artifactory'
+        RT_URL = 'http://jfrog.trickynickel.org/artifactory'
         TOKEN = credentials('artifactory-gke-token')
         SERVER_ID = 'gke'
         ARTIFACTORY_DOCKER_REGISTRY = 'jfrog.trickynickel.org/demo-docker-local'
