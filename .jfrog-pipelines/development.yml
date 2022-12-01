@@ -37,5 +37,5 @@ pipelines:
           inputResources:
             - name: my_Build_Info
               trigger: false
-            outputResources:
+          outputResources:
             - name: my_Build_Info
