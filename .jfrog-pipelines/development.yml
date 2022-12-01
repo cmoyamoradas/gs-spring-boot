@@ -29,3 +29,13 @@ pipelines:
           deployerSnapshotRepo: demo-maven-virtual
           deployerReleaseRepo: demo-maven-virtual
           autoPublishBuildInfo: true
+      - name: Promote_to_Dev
+        type: PromoteBuild
+        configuration:
+          targetRepository: demo-maven-dev-local
+          status: Development
+          inputResources:
+            - name: my_Build_Info
+              trigger: false
+            outputResources:
+            - name: my_Build_Info
