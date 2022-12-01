@@ -22,7 +22,7 @@ pipelines:
             - name: my_Git_Repository
           outputResources:
             - name: my_Build_Info
-          mvnCommand: clean deploy -Dcheckstyle.skip -DskipTests
+          mvnCommand: clean install -Dcheckstyle.skip -DskipTests
           sourceLocation: complete
           resolverSnapshotRepo: demo-maven-virtual
           resolverReleaseRepo: demo-maven-virtual
