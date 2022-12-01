@@ -14,10 +14,10 @@ resources:
     type: BuildInfo
     configuration:
       sourceArtifactory: Trickynickel
-      buildName: nana
-      buildNumber: 1
 pipelines:
   - name: GS_SPRING_BOOT_main_mvn
+    configuration:
+      affinityGroup: together
     steps:
       - name: MvnWithAll
         type: MvnBuild
@@ -35,11 +35,28 @@ pipelines:
           deployerSnapshotRepo: demo-maven-virtual
           deployerReleaseRepo: demo-maven-virtual
           autoPublishBuildInfo: true
-      - name: Promote_to_Dev
+      - name: Promotion_to_Dev
         type: PromoteBuild
         configuration:
           targetRepository: demo-maven-dev-local
           status: Development
+          inputResources:
+            - name: my_Build_Info
+          outputResources:
+            - name: promoted_Build_Info
+  - name: Promotion_to_Test
+    steps:
+      - name: scan
+        type: XrayScan
+        configuration:
+          failOnScan: false
+          inputResources:
+            - name: my_Build_Info
+      - name: Promotion_to_Test
+        type: PromoteBuild
+        configuration:
+          targetRepository: demo-maven-test-local
+          status: Test
           inputResources:
             - name: my_Build_Info
           outputResources:
