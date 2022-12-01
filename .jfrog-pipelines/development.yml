@@ -28,12 +28,12 @@ resources:
       sourceArtifactory: Trickynickel
 pipelines:
   - name: GS_SPRING_BOOT_main_mvn
-    configuration:
-      affinityGroup: together
     steps:
       - name: MvnWithAll
         type: MvnBuild
         configuration:
+          priority: 1
+          affinityGroup: together
           integrations:
             - name: Trickynickel
           inputResources:
@@ -50,6 +50,8 @@ pipelines:
       - name: Promotion_to_Dev
         type: PromoteBuild
         configuration:
+          priority: 2
+          affinityGroup: together
           targetRepository: demo-maven-dev-local
           status: Development
           inputResources:
@@ -61,6 +63,7 @@ pipelines:
       - name: scan
         type: XrayScan
         configuration:
+          priority: 1
           failOnScan: false
           inputResources:
             - name: promoted_dev_Build_Info
@@ -68,6 +71,7 @@ pipelines:
       - name: Promotion_to_Test
         type: PromoteBuild
         configuration:
+          priority: 2
           targetRepository: demo-maven-test-local
           status: Test
           inputResources:
