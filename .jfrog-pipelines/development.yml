@@ -52,6 +52,7 @@ pipelines:
           failOnScan: false
           inputResources:
             - name: my_Build_Info
+              trigger: false
       - name: Promotion_to_Test
         type: PromoteBuild
         configuration:
@@ -59,5 +60,6 @@ pipelines:
           status: Test
           inputResources:
             - name: my_Build_Info
+              trigger: false
           outputResources:
             - name: promoted_Build_Info
