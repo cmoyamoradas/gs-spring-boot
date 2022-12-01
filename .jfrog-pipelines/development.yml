@@ -60,5 +60,6 @@ pipelines:
           status: Test
           inputResources:
             - name: my_Build_Info
+              trigger: false
           outputResources:
             - name: promoted_Build_Info
