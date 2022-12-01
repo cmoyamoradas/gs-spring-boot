@@ -14,6 +14,8 @@ resources:
     type: BuildInfo
     configuration:
       sourceArtifactory: Trickynickel
+      buildName: nana
+      buildNumber: 1
 pipelines:
   - name: GS_SPRING_BOOT_main_mvn
     steps:
@@ -40,6 +42,5 @@ pipelines:
           status: Development
           inputResources:
             - name: my_Build_Info
-              trigger: false
           outputResources:
             - name: promoted_Build_Info
