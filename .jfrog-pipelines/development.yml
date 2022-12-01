@@ -1,0 +1,31 @@
+resources:
+  - name: my_Git_Repository
+    type: GitRepo
+    configuration:
+      gitProvider: MyGithub
+      path: cmoyamoradas/gs-spring-boot
+      branches:
+        include: main-mvn
+  - name: my_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
+pipelines:
+  - name: GS_SPRING_BOOT_main_mvn
+    steps:
+      - name: MvnWithAll
+        type: MvnBuild
+        configuration:
+          integrations:
+            - name: Trickynickel
+          inputResources:
+            - name: my_Git_Repository
+          outputResources:
+            - name: my_Build_Info
+          mvnCommand: clean deploy -Dcheckstyle.skip -DskipTests
+          sourceLocation: complete
+          resolverSnapshotRepo: demo-maven-virtual
+          resolverReleaseRepo: demo-maven-virtual
+          deployerSnapshotRepo: demo-maven-virtual
+          deployerReleaseRepo: demo-maven-virtual
+          autoPublishBuildInfo: true
