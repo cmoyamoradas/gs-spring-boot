@@ -10,6 +10,10 @@ resources:
     type: BuildInfo
     configuration:
       sourceArtifactory: Trickynickel
+  - name: promoted_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
 pipelines:
   - name: GS_SPRING_BOOT_main_mvn
     steps:
@@ -38,4 +42,4 @@ pipelines:
             - name: my_Build_Info
               trigger: false
           outputResources:
-            - name: my_Build_Info
+            - name: promoted_Build_Info
