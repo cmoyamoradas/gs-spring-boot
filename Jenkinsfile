@@ -1,12 +1,11 @@
 pipeline {
     agent any
     environment {
-        JURL = 'http://10.186.0.21'
-        RT_URL = 'http://10.186.0.21/artifactory'
-        TOKEN = credentials('token')
-        CREDENTIALS = 'Artifactoryk8s'
-        SERVER_ID = 'k8s'
-        ARTIFACTORY_DOCKER_REGISTRY = '10.186.0.21/demo-docker-local'
+        JURL = 'http://jfrog.trickynickel.org'
+        RT_URL = 'http://jfrog.trickynickel/artifactory'
+        TOKEN = credentials('artifactory-gke-token')
+        SERVER_ID = 'gke'
+        ARTIFACTORY_DOCKER_REGISTRY = 'jfrog.trickynickel.org/demo-docker-local'
         DOCKER_REPOSITORY = 'demo-docker-local'
         IMAGE_NAME = 'gs-spring-boot'
         IMAGE_VERSION = '1.0.0'
@@ -16,15 +15,6 @@ pipeline {
         maven "maven-3.6.3"
     }
     stages {
-        stage ('Artifactory configuration') {
-            steps {
-                rtServer (
-                    id: SERVER_ID,
-                    url: RT_URL,
-                    credentialsId: CREDENTIALS
-                )
-            }
-        }
         stage ('Config JFrgo CLI') {
             steps {
                 sh 'jf c add ${SERVER_ID} --interactive=false --overwrite=true --access-token=${TOKEN} --url=${JURL}'
