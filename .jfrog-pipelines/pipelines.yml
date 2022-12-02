@@ -1,0 +1,129 @@
+resources:
+  - name: my_Git_Repository
+    type: GitRepo
+    configuration:
+      gitProvider: MyGithub
+      path: cmoyamoradas/gs-spring-boot
+      branches:
+        include: main
+  - name: my_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
+  - name: promoted_dev_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
+  - name: promoted_test_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
+  - name: promoted_stag_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
+  - name: promoted_prod_Build_Info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Trickynickel
+pipelines:
+  - name: GS_SPRING_BOOT_Docker
+    steps:
+      - name: MvnWithAll
+        type: MvnBuild
+        configuration:
+          priority: 1
+          affinityGroup: together
+          integrations:
+            - name: Trickynickel
+          inputResources:
+            - name: my_Git_Repository
+          outputResources:
+            - name: my_Build_Info
+          mvnCommand: clean install -Dcheckstyle.skip -DskipTests
+          sourceLocation: complete
+          resolverSnapshotRepo: demo-maven-virtual
+          resolverReleaseRepo: demo-maven-virtual
+          deployerSnapshotRepo: demo-maven-virtual
+          deployerReleaseRepo: demo-maven-virtual
+          autoPublishBuildInfo: false
+      - name: Promotion_to_Dev
+        type: PromoteBuild
+        configuration:
+          priority: 2
+          affinityGroup: together
+          targetRepository: acme-docker-dev-local
+          status: Development
+          inputResources:
+            - name: my_Build_Info
+          outputResources:
+            - name: promoted_dev_Build_Info
+  - name: Promotion_to_Test
+    steps:
+      - name: scan
+        type: XrayScan
+        configuration:
+          priority: 1
+          failOnScan: false
+          inputResources:
+            - name: promoted_dev_Build_Info
+              trigger: false
+      - name: Promotion_to_Test
+        type: PromoteBuild
+        configuration:
+          priority: 2
+          targetRepository: acme-docker-test-local
+          status: Test
+          inputSteps:
+            - name: scan
+          inputResources:
+            - name: promoted_dev_Build_Info
+              trigger: false
+          outputResources:
+            - name: promoted_test_Build_Info
+  - name: Promotion_to_Staging
+    steps:
+      - name: scan
+        type: XrayScan
+        configuration:
+          priority: 1
+          failOnScan: true
+          inputResources:
+            - name: promoted_test_Build_Info
+              trigger: false
+      - name: Promotion_to_Staging
+        type: PromoteBuild
+        configuration:
+          priority: 2
+          targetRepository: acme-docker-staging-local
+          status: Staging
+          inputSteps:
+            - name: scan
+          inputResources:
+            - name: promoted_test_Build_Info
+              trigger: false
+          outputResources:
+            - name: promoted_stag_Build_Info
+  - name: Promotion_to_Production
+    steps:
+      - name: scan
+        type: XrayScan
+        configuration:
+          priority: 1
+          failOnScan: true
+          inputResources:
+            - name: promoted_stag_Build_Info
+              trigger: false
+      - name: Promotion_to_Production
+        type: PromoteBuild
+        configuration:
+          priority: 2
+          targetRepository: adme-docker-prod-local
+          status: Production
+          inputSteps:
+            - name: scan
+          inputResources:
+            - name: promoted_stag_Build_Info
+              trigger: false
+          outputResources:
+            - name: promoted_prod_Build_Info
