@@ -104,3 +104,26 @@ pipelines:
               trigger: false
           outputResources:
             - name: promoted_stag_Build_Info
+  - name: Promotion_to_Production
+    steps:
+      - name: scan
+        type: XrayScan
+        configuration:
+          priority: 1
+          failOnScan: true
+          inputResources:
+            - name: promoted_stag_Build_Info
+              trigger: false
+      - name: Promotion_to_Production
+        type: PromoteBuild
+        configuration:
+          priority: 2
+          targetRepository: demo-maven-production-local
+          status: Production
+          inputSteps:
+            - name: scan
+          inputResources:
+            - name: promoted_stag_Build_Info
+              trigger: false
+          outputResources:
+            - name: promoted_prod_Build_Info
