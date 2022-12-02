@@ -92,15 +92,15 @@ pipelines:
             - name: promoted_test_Build_Info
               trigger: false
       - name: Promotion_to_Staging
-          type: PromoteBuild
-          configuration:
-            priority: 2
-              targetRepository: demo-maven-staging-local
-              status: Staging
-              inputSteps:
-                - name: scan
-              inputResources:
-                - name: promoted_test_Build_Info
-                  trigger: false
-              outputResources:
-                - name: promoted_stag_Build_Info
+        type: PromoteBuild
+        configuration:
+          priority: 2
+            targetRepository: demo-maven-staging-local
+            status: Staging
+            inputSteps:
+              - name: scan
+            inputResources:
+              - name: promoted_test_Build_Info
+                trigger: false
+            outputResources:
+              - name: promoted_stag_Build_Info
