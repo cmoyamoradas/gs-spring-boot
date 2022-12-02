@@ -46,7 +46,7 @@ pipelines:
           autoPublishBuildInfo: false
         execution:
           onComplete:
-            - add_run_files complete/target/*.jar app
+            - add_run_files complete/target app
       - name: build_image
         type: DockerBuild
         configuration:
@@ -55,7 +55,7 @@ pipelines:
           dockerFileName: Dockerfile
           dockerImageName: jfrog.trickynickel.org/gs_spring_boot
           dockerImageTag: ${run_number}
-          dockerOptions: --build-arg JAR_FILE=gs_spring_boot.jar
+          dockerOptions: --build-arg JAR_FILE=target/*.jar
           inputSteps:
             - name: build_app
           inputResources:
@@ -64,7 +64,7 @@ pipelines:
             - name: Trickynickel
         execution:
           onStart:
-            - restore_run_files app gs_spring_boot.jar
+            - restore_run_files app target
       - name: docker_push
         type: DockerPush
         configuration:
