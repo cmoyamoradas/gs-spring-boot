@@ -46,7 +46,7 @@ pipelines:
           autoPublishBuildInfo: false
         execution:
           onComplete:
-            - cd workspace
+            - cd output
             - ls -la
             - add_run_files complete/target app
       - name: build_image
