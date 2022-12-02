@@ -118,7 +118,7 @@ pipelines:
         type: PromoteBuild
         configuration:
           priority: 2
-          targetRepository: demo-maven-production-local
+          targetRepository: demo-maven-prod-local
           status: Production
           inputSteps:
             - name: scan
