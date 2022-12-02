@@ -74,6 +74,8 @@ pipelines:
           priority: 2
           targetRepository: demo-maven-test-local
           status: Test
+          inputSteps:
+            - name: scan
           inputResources:
             - name: promoted_dev_Build_Info
               trigger: false
