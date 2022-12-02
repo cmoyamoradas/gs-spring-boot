@@ -46,9 +46,7 @@ pipelines:
           autoPublishBuildInfo: false
         execution:
           onComplete:
-            - ls -la workspace/run_state/jfrog
-            - ls -la workspace/run_state/jfrog/builds
-            - ls -la workspace/run_state/jfrog/properties
+            - ls -la workspace/run_state/jfrog/builds/R1NfU1BSSU5HX0JPT1RfRG9ja2VyXzEzX2FjbWU=
             - add_run_files complete/target app
       - name: build_image
         type: DockerBuild
