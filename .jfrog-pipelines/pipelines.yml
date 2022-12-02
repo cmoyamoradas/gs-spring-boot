@@ -44,6 +44,9 @@ pipelines:
           deployerSnapshotRepo: demo-maven-virtual
           deployerReleaseRepo: demo-maven-virtual
           autoPublishBuildInfo: false
+          execution:
+            onComplete:
+              - add_run_files target/*.jar app
       - name: build_image
         type: DockerBuild
         configuration:
@@ -52,11 +55,14 @@ pipelines:
           dockerFileName: Dockerfile
           dockerImageName: jfrog.trickynickel.org/gs_spring_boot
           dockerImageTag: ${run_number}
-          dockerOptions: --build-arg JAR_FILE=target/*.jar
+          dockerOptions: --build-arg JAR_FILE=gs_spring_boot.jar
           inputResources:
             - name: my_Git_Repository
           integrations:
             - name: Trickynickel
+          execution:
+            onStart:
+              - restore_run_files app gs_spring_boot.jar
       - name: docker_push
         type: DockerPush
         configuration:
