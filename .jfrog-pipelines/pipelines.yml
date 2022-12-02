@@ -54,7 +54,7 @@ pipelines:
           dockerImageTag: ${run_number}
           dockerOptions: --build-arg JAR_FILE=target/*.jar
           inputResources:
-            - name: build_app
+            - name: my_Git_Repository
           integrations:
             - name: Trickynickel
       - name: docker_push
