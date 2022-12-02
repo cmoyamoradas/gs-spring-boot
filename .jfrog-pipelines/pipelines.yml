@@ -2,7 +2,7 @@ resources:
   - name: my_Git_Repository
     type: GitRepo
     configuration:
-      gitProvider: MyGithub
+      gitProvider: Github
       path: cmoyamoradas/gs-spring-boot
       branches:
         include: main
