@@ -58,22 +58,22 @@ pipelines:
           integrations:
             - name: Trickynickel
       - name: docker_push
-          type: DockerPush
-          configuration:
-            affinityGroup: docker_group
-            targetRepository: acme-docker-dev-local
-            integrations:
-              - name: Trickynickel
-            inputSteps:
-              - name: build_image
+        type: DockerPush
+        configuration:
+          affinityGroup: docker_group
+          targetRepository: acme-docker-dev-local
+          integrations:
+            - name: Trickynickel
+          inputSteps:
+            - name: build_image
       - name: publish_docker_build
-          type: PublishBuildInfo
-          configuration:
-            affinityGroup: docker_group
-            inputSteps:
-              - name: docker_push
-            outputResources:
-              - name: my_Build_Info
+        type: PublishBuildInfo
+        configuration:
+          affinityGroup: docker_group
+          inputSteps:
+            - name: docker_push
+          outputResources:
+            - name: my_Build_Info
       - name: Promotion_to_Dev
         type: PromoteBuild
         configuration:
