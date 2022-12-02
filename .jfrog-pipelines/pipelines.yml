@@ -29,17 +29,14 @@ resources:
 pipelines:
   - name: GS_SPRING_BOOT_Docker
     steps:
-      - name: MvnWithAll
+      - name: build_app
         type: MvnBuild
         configuration:
-          priority: 1
-          affinityGroup: together
+          affinityGroup: docker_group
           integrations:
             - name: Trickynickel
           inputResources:
             - name: my_Git_Repository
-          outputResources:
-            - name: my_Build_Info
           mvnCommand: clean install -Dcheckstyle.skip -DskipTests
           sourceLocation: complete
           resolverSnapshotRepo: demo-maven-virtual
@@ -47,13 +44,44 @@ pipelines:
           deployerSnapshotRepo: demo-maven-virtual
           deployerReleaseRepo: demo-maven-virtual
           autoPublishBuildInfo: false
+      - name: build_image
+        type: DockerBuild
+        configuration:
+          affinityGroup: docker_group
+          dockerFileLocation: complete
+          dockerFileName: Dockerfile
+          dockerImageName: jfrog.trickynickel.org/gs_spring_boot
+          dockerImageTag: ${run_number}
+          dockerOptions: --build-arg JAR_FILE=target/*.jar
+          inputResources:
+            - name: build_app
+          integrations:
+            - name: Trickynickel
+      - name: docker_push
+          type: DockerPush
+          configuration:
+            affinityGroup: docker_group
+            targetRepository: acme-docker-dev-local
+            integrations:
+              - name: Trickynickel
+            inputSteps:
+              - name: build_image
+      - name: publish_docker_build
+          type: PublishBuildInfo
+          configuration:
+            affinityGroup: docker_group
+            inputSteps:
+              - name: docker_push
+            outputResources:
+              - name: my_Build_Info
       - name: Promotion_to_Dev
         type: PromoteBuild
         configuration:
-          priority: 2
-          affinityGroup: together
+          affinityGroup: docker_group
           targetRepository: acme-docker-dev-local
           status: Development
+          inputSteps:
+            - name: publish_docker_build
           inputResources:
             - name: my_Build_Info
           outputResources:
