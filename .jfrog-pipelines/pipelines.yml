@@ -46,8 +46,11 @@ pipelines:
           autoPublishBuildInfo: false
         execution:
           onComplete:
-            - cd workspace/output
-            - ls -la
+            - ls -la workspace/download
+            - ls -la workspace/tmp
+            - ls -la workspace/run_state
+            - ls -la workspace/upload
+            - ls -la workspace/cache
             - add_run_files complete/target app
       - name: build_image
         type: DockerBuild
