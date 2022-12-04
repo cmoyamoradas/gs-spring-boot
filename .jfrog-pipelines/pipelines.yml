@@ -48,7 +48,6 @@ pipelines:
           onComplete:
             - ls -la $shared_workspace
             - echo $shared_workspace
-            - ls -la
             - pwd
             - add_affinity_group_files dependencyState/resources/my_Git_Repository/complete/target app
       - name: build_image
@@ -71,6 +70,7 @@ pipelines:
             - ls -la $shared_workspace
             - echo $shared_workspace
             - ls -la
+            - - ls -la $shared_workspace/affinity_group_state
             - pwd
       - name: docker_push
         type: DockerPush
