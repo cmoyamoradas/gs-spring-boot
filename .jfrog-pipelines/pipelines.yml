@@ -75,7 +75,7 @@ pipelines:
             - ls -la workspace/run_state
             - ls -la workspace/run_state/app
             - restore_run_files app target
-            - ls -la
+            - ls -la target
       - name: docker_push
         type: DockerPush
         configuration:
