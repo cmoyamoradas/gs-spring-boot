@@ -50,7 +50,7 @@ pipelines:
             - echo $shared_workspace
             - ls -la
             - pwd
-            - add_run_files target app
+            - add_run_files dependencyState/resources/my_Git_Repository/complete/target app
       - name: build_image
         type: DockerBuild
         configuration:
