@@ -47,8 +47,6 @@ pipelines:
         execution:
           onExecute:
             - ls $shared_workspace
-          onComplete:
-            - add_run_files complete/target app
       - name: build_image
         type: DockerBuild
         configuration:
