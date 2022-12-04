@@ -70,7 +70,7 @@ pipelines:
             - ls -la $shared_workspace
             - echo $shared_workspace
             - ls -la
-            - ls -la $shared_workspace/affinity_group_state
+            - ls -la $shared_workspace/affinity_group_state/app
             - pwd
       - name: docker_push
         type: DockerPush
