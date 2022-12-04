@@ -50,7 +50,7 @@ pipelines:
             - echo $shared_workspace
             - ls -la
             - pwd
-            - add_run_files dependencyState/resources/my_Git_Repository/complete/target app
+            - add_affinity_group_files dependencyState/resources/my_Git_Repository/complete/target app
       - name: build_image
         type: DockerBuild
         configuration:
@@ -59,7 +59,7 @@ pipelines:
           dockerFileName: Dockerfile
           dockerImageName: jfrog.trickynickel.org/gs_spring_boot
           dockerImageTag: ${run_number}
-          dockerOptions: --build-arg JAR_FILE=../../../../target/*.jar
+          dockerOptions: --build-arg JAR_FILE=$shared_workspace/app/*.jar
           inputSteps:
             - name: build_app
           inputResources:
@@ -72,10 +72,6 @@ pipelines:
             - echo $shared_workspace
             - ls -la
             - pwd
-            - ls -la workspace/run_state
-            - ls -la workspace/run_state/app
-            - restore_run_files app target
-            - ls -la target
       - name: docker_push
         type: DockerPush
         configuration:
