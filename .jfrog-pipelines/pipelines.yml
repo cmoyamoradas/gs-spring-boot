@@ -49,6 +49,7 @@ pipelines:
             - ls -la $shared_workspace
             - echo $shared_workspace
             - ls -la
+            - pwd
             - add_run_files target app
       - name: build_image
         type: DockerBuild
@@ -69,6 +70,8 @@ pipelines:
           onStart:
             - ls -la $shared_workspace
             - echo $shared_workspace
+            - ls -la
+            - pwd
             - restore_run_files app target
       - name: docker_push
         type: DockerPush
