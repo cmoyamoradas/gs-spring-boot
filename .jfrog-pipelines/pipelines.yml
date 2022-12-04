@@ -45,8 +45,9 @@ pipelines:
           deployerReleaseRepo: demo-maven-virtual
           autoPublishBuildInfo: false
         execution:
+          onExecute:
+            - ls -la $shared_workspace
           onComplete:
-            - ls -la workspace/run_state/jfrog/builds/R1NfU1BSSU5HX0JPT1RfRG9ja2VyXzEzX2FjbWU=
             - add_run_files complete/target app
       - name: build_image
         type: DockerBuild
@@ -65,6 +66,7 @@ pipelines:
             - name: Trickynickel
         execution:
           onStart:
+            - ls -la $shared_workspace
             - restore_run_files app target
       - name: docker_push
         type: DockerPush
