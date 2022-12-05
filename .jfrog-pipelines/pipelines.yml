@@ -72,6 +72,8 @@ pipelines:
             - ls -la
             - ls -la $shared_workspace/affinity_group_state/app/dependencyState/resources
             - pwd
+            - restore_affinity_group_files app target
+            - ls -la
       - name: docker_push
         type: DockerPush
         configuration:
