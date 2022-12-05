@@ -6,6 +6,14 @@ resources:
       path: cmoyamoradas/gs-spring-boot
       branches:
         include: main
+  - name: gs_s_b_image
+    type: Image
+    configuration:
+      registry: MyDockerRegistry
+      sourceRepository: acme-docker-dev-local
+      imageName: jfrog.trickynickel.org/acme-docker-dev-local/gs_spring_boot
+      imageTag: ${run_number}
+
   - name: my_Build_Info
     type: BuildInfo
     configuration:
@@ -60,8 +68,8 @@ pipelines:
             - name: build_app
           inputResources:
             - name: my_Git_Repository
-          integrations:
-            - name: MyDockerRegistry
+          outputResources:
+            - name: gs_s_b_image
         execution:
           onStart:
             - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/
@@ -70,8 +78,8 @@ pipelines:
         configuration:
           affinityGroup: docker_group
           targetRepository: acme-docker-dev-local
-          integrations:
-            - name: MyDockerRegistry
+          inputResources:
+            - name: gs_s_b_image
           inputSteps:
             - name: build_image
       - name: publish_docker_build
