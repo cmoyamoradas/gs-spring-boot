@@ -55,7 +55,7 @@ pipelines:
           dockerFileName: Dockerfile
           dockerImageName: jfrog.trickynickel.org/gs_spring_boot
           dockerImageTag: ${run_number}
-          dockerOptions: --build-arg JAR_FILE=target/*.jar
+          dockerOptions: --build-arg JAR_FILE=*.jar
           inputSteps:
             - name: build_app
           inputResources:
@@ -64,9 +64,8 @@ pipelines:
             - name: Trickynickel
         execution:
           onStart:
-            - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/target/
+            - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/
             - ls -la dependencyState/resources/my_Git_Repository/complete/
-            - ls -la dependencyState/resources/my_Git_Repository/complete/target
       - name: docker_push
         type: DockerPush
         configuration:
