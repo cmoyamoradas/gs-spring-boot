@@ -58,7 +58,7 @@ pipeline {
                 sh 'jf rt docker-push ${ARTIFACTORY_DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION} ${DOCKER_REPOSITORY} --build-name="${BUILD_NAME}" --build-number=${BUILD_ID} --url ${RT_URL} --access-token ${TOKEN}'
             }
         }
-        stage ('Publish build info') {
+        stage ('Publish build-info') {
             steps {
                 // Collect environment variables for the build
                 sh 'jf rt bce "${BUILD_NAME}" ${BUILD_ID}'
