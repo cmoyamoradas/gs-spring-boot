@@ -61,18 +61,17 @@ pipelines:
           inputResources:
             - name: my_Git_Repository
           integrations:
-            - name: Trickynickel
+            - name: MyDockerRegistry
         execution:
           onStart:
             - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/
-            - ls -la dependencyState/resources/my_Git_Repository/complete/
       - name: docker_push
         type: DockerPush
         configuration:
           affinityGroup: docker_group
           targetRepository: acme-docker-dev-local
           integrations:
-            - name: Trickynickel
+            - name: MyDockerRegistry
           inputSteps:
             - name: build_image
       - name: publish_docker_build
