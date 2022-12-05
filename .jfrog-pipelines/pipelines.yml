@@ -28,6 +28,8 @@ resources:
       sourceArtifactory: Trickynickel
 pipelines:
   - name: GS_SPRING_BOOT_Docker
+    configuration:
+      jfrogCliVersion: 2
     steps:
       - name: build_app
         type: MvnBuild
