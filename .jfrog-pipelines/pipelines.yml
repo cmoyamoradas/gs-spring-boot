@@ -49,7 +49,7 @@ pipelines:
             - ls -la $shared_workspace
             - echo $shared_workspace
             - pwd
-            - add_affinity_group_files dependencyState/resources/my_Git_Repository/complete/target app
+            - cp dependencyState/resources/my_Git_Repository/complete/target/*.jar $shared_workspace
       - name: build_image
         type: DockerBuild
         configuration:
@@ -58,7 +58,7 @@ pipelines:
           dockerFileName: Dockerfile
           dockerImageName: jfrog.trickynickel.org/gs_spring_boot
           dockerImageTag: ${run_number}
-          dockerOptions: --build-arg JAR_FILE=target/*.jar
+          dockerOptions: --build-arg JAR_FILE=$shared_workspace/*.jar
           inputSteps:
             - name: build_app
           inputResources:
