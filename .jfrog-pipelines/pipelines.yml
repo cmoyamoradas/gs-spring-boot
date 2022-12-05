@@ -65,6 +65,8 @@ pipelines:
         execution:
           onStart:
             - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/target
+            - ls -la /var/opt/jfrog/pipelines/data/GS_SPRING_BOOT_Docker/runs/80/steps/build_image/288/dependencyState/resources/my_Git_Repository/complete/
+            - ls -la /var/opt/jfrog/pipelines/data/GS_SPRING_BOOT_Docker/runs/80/steps/build_image/288/dependencyState/resources/my_Git_Repository/complete/target
       - name: docker_push
         type: DockerPush
         configuration:
