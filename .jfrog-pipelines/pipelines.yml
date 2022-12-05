@@ -62,7 +62,6 @@ pipelines:
             - name: my_Git_Repository
           integrations:
             - name: Trickynickel
-            - name: MyDockerRegistry
         execution:
           onStart:
             - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/
