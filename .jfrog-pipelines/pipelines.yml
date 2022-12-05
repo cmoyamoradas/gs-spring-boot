@@ -60,8 +60,6 @@ pipelines:
             - name: build_app
           inputResources:
             - name: my_Git_Repository
-          outputResources:
-            - name: gs_s_b_image
           integrations:
             - name: Trickynickel
             - name: MyDockerRegistry
