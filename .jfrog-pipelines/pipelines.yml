@@ -64,7 +64,7 @@ pipelines:
             - name: Trickynickel
         execution:
           onStart:
-            - cp $shared_workspace dependencyState/resources/my_Git_Repository/complete/target
+            - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/target
       - name: docker_push
         type: DockerPush
         configuration:
