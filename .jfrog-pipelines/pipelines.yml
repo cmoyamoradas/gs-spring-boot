@@ -58,7 +58,7 @@ pipelines:
           dockerFileName: Dockerfile
           dockerImageName: jfrog.trickynickel.org/gs_spring_boot
           dockerImageTag: ${run_number}
-          dockerOptions: --build-arg JAR_FILE=$shared_workspace/*.jar
+          dockerOptions: --build-arg JAR_FILE=$shared_workspace/spring-boot-complete-1.0.0.jar
           inputSteps:
             - name: build_app
           inputResources:
