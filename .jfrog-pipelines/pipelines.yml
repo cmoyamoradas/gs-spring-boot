@@ -53,7 +53,7 @@ pipelines:
           affinityGroup: docker_group
           dockerFileLocation: complete
           dockerFileName: Dockerfile
-          dockerImageName: jfrog.trickynickel.org/gs_spring_boot
+          dockerImageName: jfrog.trickynickel.org/acme-docker-dev-local/gs_spring_boot
           dockerImageTag: ${run_number}
           dockerOptions: --build-arg JAR_FILE=*.jar
           inputSteps:
