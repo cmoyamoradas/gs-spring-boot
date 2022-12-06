@@ -76,6 +76,9 @@ pipelines:
             - name: build_image
           integrations:
             - name: Trickynickel
+        execution:
+          onStart:
+            - docker info
       - name: publish_docker_build
         type: PublishBuildInfo
         configuration:
