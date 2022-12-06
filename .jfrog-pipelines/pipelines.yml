@@ -47,6 +47,8 @@ pipelines:
           deployerReleaseRepo: demo-maven-virtual
           autoPublishBuildInfo: false
         execution:
+          onStart:
+            - docker info
           onComplete:
             - cp dependencyState/resources/my_Git_Repository/complete/target/*.jar $shared_workspace
       - name: build_image
@@ -66,6 +68,7 @@ pipelines:
             - name: Trickynickel
         execution:
           onStart:
+            - docker info
             - cp $shared_workspace/*.jar dependencyState/resources/my_Git_Repository/complete/
       - name: docker_push
         type: DockerPush
