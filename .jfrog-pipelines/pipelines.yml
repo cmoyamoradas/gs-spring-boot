@@ -74,7 +74,7 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: docker_group
-          #targetRepository: acme-docker-dev-local
+          # targetRepository: acme-docker-dev-local
           inputSteps:
             - name: build_image
           integrations:
