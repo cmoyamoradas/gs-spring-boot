@@ -82,6 +82,7 @@ pipelines:
         execution:
           onStart:
             - docker info
+            - ls -ls /etc/docker
       - name: publish_docker_build
         type: PublishBuildInfo
         configuration:
