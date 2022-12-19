@@ -84,10 +84,11 @@ pipelines:
             - ls -la /etc/default/
             - ls -la /lib/systemd/system/
             - docker info
-            - mkdir -p /etc/docker
-            - touch /etc/docker/daemon.json
-            - echo "{'insecure-registries':['jfrog.trickynickel.org']}" >> daemon.json
-            - systemctl restart docker
+            - dockerd --insecure-registry jfrog.trickynickel.org
+            #- mkdir -p /etc/docker
+            #- touch /etc/docker/daemon.json
+            #- echo "{'insecure-registries':['jfrog.trickynickel.org']}" >> daemon.json
+            #- systemctl restart docker
             - docker info
             #- service docker restart
       - name: publish_docker_build
