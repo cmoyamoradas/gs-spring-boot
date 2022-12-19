@@ -82,7 +82,10 @@ pipelines:
         execution:
           onStart:
             - docker info
-            - ls -ls /home/rootless/.local/share/docker
+            - mkdir -p /etc/docker
+            - touch /etc/docker/daemon.json
+            - echo "{'insecure-registries':['jfrog.trickynickel.org']}" >> daemon.json
+            - service docker restart
       - name: publish_docker_build
         type: PublishBuildInfo
         configuration:
