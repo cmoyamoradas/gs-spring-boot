@@ -91,6 +91,7 @@ pipelines:
             #- systemctl restart docker
             #- service docker restart
             - export DOCKER_OPTS+="--insecure-registry jfrog.trickynickel.org"
+            - dockerd --debug
             - docker info
       - name: publish_docker_build
         type: PublishBuildInfo
