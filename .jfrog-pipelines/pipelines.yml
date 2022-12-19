@@ -89,7 +89,8 @@ pipelines:
             - touch /etc/docker/daemon.json
             - echo "{'insecure-registries':['jfrog.trickynickel.org']}" >> daemon.json
             #- systemctl restart docker
-            - service docker restart
+            #- service docker restart
+            - export DOCKER_OPTS+="--insecure-registry jfrog.trickynickel.org"
             - docker info
       - name: publish_docker_build
         type: PublishBuildInfo
