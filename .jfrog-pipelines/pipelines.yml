@@ -81,11 +81,13 @@ pipelines:
             - name: Trickynickel
         execution:
           onStart:
+            - ls -la /etc/default/
             - docker info
             - mkdir -p /etc/docker
             - touch /etc/docker/daemon.json
             - echo "{'insecure-registries':['jfrog.trickynickel.org']}" >> daemon.json
-            - service docker restart
+            - docker info
+            #- service docker restart
       - name: publish_docker_build
         type: PublishBuildInfo
         configuration:
