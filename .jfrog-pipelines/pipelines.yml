@@ -82,6 +82,7 @@ pipelines:
         execution:
           onStart:
             - ls -la /etc/default/
+            - ls -la /lib/systemd/system/
             - docker info
             - mkdir -p /etc/docker
             - touch /etc/docker/daemon.json
