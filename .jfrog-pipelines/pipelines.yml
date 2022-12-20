@@ -84,7 +84,7 @@ pipelines:
             image:
               custom:
                 name: releases-docker.jfrog.io/jfrog/pipelines-u18java
-                tag: 17
+                tag: "17"
                 options: "--insecure-registry jfrog.trickynickel.org"
         execution:
           onStart:
