@@ -30,8 +30,6 @@ pipelines:
   - name: GS_SPRING_BOOT_Docker
     configuration:
       jfrogCliVersion: 2
-      runtime:
-        type: host
     steps:
       - name: build_app
         type: MvnBuild
@@ -81,6 +79,13 @@ pipelines:
             - name: build_image
           integrations:
             - name: Trickynickel
+          runtime:
+            type: image
+            image:
+              custom:
+                name: releases-docker.jfrog.io/jfrog/pipelines-u18java
+                tag: 17
+                options: "--insecure-registry jfrog.trickynickel.org"
         execution:
           onStart:
             #- ls -la /etc/default/
