@@ -74,31 +74,13 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: docker_group
-          # targetRepository: acme-docker-dev-local
+          targetRepository: acme-docker-dev-local
           inputSteps:
             - name: build_image
           integrations:
             - name: Trickynickel
-          runtime:
-            type: image
-            image:
-              custom:
-                name: releases-docker.jfrog.io/jfrog/pipelines-u18java
-                tag: "17"
-                options: "--insecure-registry jfrog.trickynickel.org"
         execution:
           onStart:
-            #- ls -la /etc/default/
-            #- ls -la /lib/systemd/system/
-            - docker info
-            #- dockerd --insecure-registry jfrog.trickynickel.org
-            - mkdir -p /etc/docker
-            - touch /etc/docker/daemon.json
-            - echo "{'insecure-registries':['jfrog.trickynickel.org']}" >> daemon.json
-            #- systemctl restart docker
-            #- service docker restart
-            - export DOCKER_OPTS+="--insecure-registry jfrog.trickynickel.org"
-            - dockerd --debug
             - docker info
       - name: publish_docker_build
         type: PublishBuildInfo
