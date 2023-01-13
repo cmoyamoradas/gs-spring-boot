@@ -7,7 +7,6 @@ pipeline {
         ARTIFACTORY_LOCAL_DEV_REPO = 'demo-maven-dev-local'
         SERVER_ID = 'gke'
         BUILD_NAME = "GS_SPRING_BOOT_main_mvn"
-        BUILD_URL = "http://jenkins.trickynickel.org/job/${JOB_BASE_NAME}/job/${BRANCH_NAME}/${BUILD_ID}"
     }
     tools {
         maven "maven-3.6.3"
