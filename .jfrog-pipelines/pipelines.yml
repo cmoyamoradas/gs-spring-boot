@@ -34,6 +34,8 @@ pipelines:
       - name: build_app
         type: MvnBuild
         configuration:
+          environmentVariables:
+            JFROG_CLI_BUILD_NAME: maven_build
           affinityGroup: docker_group
           integrations:
             - name: Trickynickel
