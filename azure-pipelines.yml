@@ -1,0 +1,15 @@
+- task: JfrogCliV2@1
+  inputs:
+    jfrogPlatformConnection: 'JFrog Platform'
+    command: 'jf mvnc --repo-resolve-releases=demo-maven-virtual --repo-resolve-snapshots=demo-maven-virtual --repo-deploy-releases=demo-maven-virtual --repo-deploy-snapshots=demo-maven-virtual'
+    workingDirectory: 'complete'
+- task: JfrogCliV2@1
+  inputs:
+    jfrogPlatformConnection: 'JFrog Platform'
+    command: 'jf mvn clean test-compile -Dcheckstyle.skip -DskipTests'
+    workingDirectory: 'complete'
+- task: JfrogCliV2@1
+  inputs:
+    jfrogPlatformConnection: 'JFrog Platform'
+    command: 'jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name=GS_SPRING_BOOT_MVN --build-number=1'
+    workingDirectory: 'complete'
