@@ -1,0 +1,40 @@
+name: "gs-spring-boot"
+on: push
+env:
+  JURL: 'http://jfrog.trickynickel.org'
+  RT_URL: 'http://jfrog.trickynickel.org/artifactory'
+  ARTIFACTORY_LOCAL_DEV_REPO: 'demo-maven-dev-local'
+  ARTIFACTORY_VIRTUAL_REPO: 'demo-maven-virtual'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          # JFrog platform url
+          JF_URL: ${{ secrets.JF_URL }}
+          # JFrog Platform access token
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+        run: |
+          jf rt ping
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Config Maven
+        run: jf mvnc --repo-resolve-releases=${{ env.ARTIFACTORY_VIRTUAL_REPO }} --repo-resolve-snapshots=${{ env.ARTIFACTORY_VIRTUAL_REPO }} --repo-deploy-releases=${{ env.ARTIFACTORY_VIRTUAL_REPO }} --repo-deploy-snapshots=${{ env.ARTIFACTORY_VIRTUAL_REPO }}
+      - name: Compile code
+        working-directory: ./complete
+        run: jf mvn clean test-compile -Dcheckstyle.skip -DskipTests
+      - name: Upload artifact
+        working-directory: ./complete
+        run: jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name=${{ github.workflow }} --build-number=${{ github.run_number }}
+      - name: Publish build-info
+        run: |
+          # Collect environment variables for the build
+          jf rt bce ${{ github.workflow }} ${{ github.run_number }}
+          # Collect VCS details from git and add them to the build
+          jf rt bag ${{ github.workflow }} ${{ github.run_number }}
+          # Publish build info
+          jf rt bp ${{ github.workflow }} ${{ github.run_number }} --build-url=https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks/${{ github.run_id }}
+          # Promote the build
+          jf rt bpr --status=Development --props="status=Development" ${{ github.workflow }} ${{ github.run_number }} ${{ env.ARTIFACTORY_LOCAL_DEV_REPO }}
