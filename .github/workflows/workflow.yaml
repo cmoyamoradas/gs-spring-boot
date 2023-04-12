@@ -22,6 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Config Maven
+        working-directory: ./complete
         run: jf mvnc --repo-resolve-releases=${{ env.ARTIFACTORY_VIRTUAL_REPO }} --repo-resolve-snapshots=${{ env.ARTIFACTORY_VIRTUAL_REPO }} --repo-deploy-releases=${{ env.ARTIFACTORY_VIRTUAL_REPO }} --repo-deploy-snapshots=${{ env.ARTIFACTORY_VIRTUAL_REPO }}
       - name: Compile code
         working-directory: ./complete
