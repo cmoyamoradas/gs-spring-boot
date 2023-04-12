@@ -17,6 +17,7 @@ jobs:
           # JFrog Platform access token
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       - run: |
+          jf config show
           jf rt ping
       - name: Checkout code
         uses: actions/checkout@v3
