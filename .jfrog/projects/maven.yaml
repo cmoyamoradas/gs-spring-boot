@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+  serverId: k8s
+  snapshotRepo: demo-maven-virtual
+  releaseRepo: demo-maven-virtual
+deployer:
+  serverId: k8s
+  snapshotRepo: demo-maven-virtual
+  releaseRepo: demo-maven-virtual

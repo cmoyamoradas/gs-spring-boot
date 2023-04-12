@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+  serverId: gke
+  snapshotRepo: prj-a-maven-virtual
+  releaseRepo: prj-a-maven-virtual
+deployer:
+  serverId: gke
+  snapshotRepo: prj-a-maven-virtual
+  releaseRepo: prj-a-maven-virtual
