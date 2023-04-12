@@ -1,0 +1,34 @@
+name: "gs-spring-boot"
+on: push
+env:
+  DOCKER_REPOSITORY: 'carlos-docker-virtual'
+  IMAGE_NAME: 'my-pet-clinic'
+  IMAGE_VERSION: 'latest'
+  ARTIFACTORY_DOCKER_REGISTRY: 'soleng.jfrog.io'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Compile code
+        run: mvn clean test-compile -Dcheckstyle.skip -DskipTests
+      - name: Package
+        run: mvn package spring-boot:repackage -DskipTests -Dcheckstyle.skip
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --build-arg='JAR_FILE=target/*.jar' --tag ${{ env.ARTIFACTORY_DOCKER_REGISTRY }}/${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION}}
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
+      - name: Run JFrog CLI
+        run: |
+          # Push image to Artifactory
+          jf rt docker push ${{ env.ARTIFACTORY_DOCKER_REGISTRY }}/${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }} ${{ env.DOCKER_REPOSITORY }} --build-name=${{ github.workflow }} --build-number=${{ github.run_number }}
+          # Collect environment variables for the build
+          #jf rt bce ${{ github.workflow }} ${{ github.run_number }}
+          jf rt bce ${{ github.workflow }} ${{ github.run_number }}
+          # Publish build info
+          jf rt bp ${{ github.workflow }} ${{ github.run_number }}
+          # Scan published build with fail by default (true)
+          jf bs ${{ github.workflow }} ${{ github.run_number }}
