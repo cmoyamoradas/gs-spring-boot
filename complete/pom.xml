@@ -49,15 +49,5 @@
 		</plugins>
 	</build>
 
-	<distributionManagement>
-		<repository>
-			<id>dev</id>
-			<url>http://localhost:8083/artifactory/demo-maven-dev-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>dev</id>
-			<url>http://localhost:8083/artifactory/demo-maven-dev-local</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 </project>
