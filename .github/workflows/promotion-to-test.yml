@@ -1,0 +1,24 @@
+name: Promotion to Test
+on:
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'Build name to promote'
+        required: true
+      build_number:
+        description: 'Build number to promote'
+        required: true
+env:
+  JURL: 'http://jfrog.trickynickel.org'
+  RT_URL: 'http://jfrog.trickynickel.org/artifactory'
+  ARTIFACTORY_LOCAL_DEV_REPO: 'demo-maven-dev-local'
+  ARTIFACTORY_LOCAL_TEST_REPO: 'demo-maven-test-local'
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scan build
+        run: JFROG_CLI_LOG_LEVEL=DEBUG jf rt bs --fail=false ${{ github.event.inputs.build_name }} ${{ github.event.inputs.build_number }}
+
+      - name: Promote build
+        run: jf rt bpr --source-repo=${{ env.ARTIFACTORY_LOCAL_DEV_REPO }} --status=Test --props="status=Test" ${{ github.event.inputs.build_name }} ${{ github.event.inputs.build_number }} ${{ env.ARTIFACTORY_LOCAL_TEST_REPO }}
