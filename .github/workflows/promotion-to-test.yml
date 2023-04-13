@@ -1,4 +1,4 @@
-name: Promotion to Test
+name: "Promotion to Test"
 on:
   workflow_dispatch:
     inputs:

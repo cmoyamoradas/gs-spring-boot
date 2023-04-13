@@ -1,4 +1,4 @@
-name: "gs-spring-boot"
+name: "Development"
 on: push
 env:
   JURL: 'http://jfrog.trickynickel.org'
