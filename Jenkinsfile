@@ -16,19 +16,19 @@ pipeline {
     stages {
         stage ('Config JFrgo CLI') {
             steps {
-                jf c add ${SERVER_ID} --interactive=false --overwrite=true --access-token=${TOKEN} --url=${JURL}
-                jf config use ${SERVER_ID}
+                jf 'c add ${SERVER_ID} --interactive=false --overwrite=true --access-token=${TOKEN} --url=${JURL}'
+                jf 'config use ${SERVER_ID}'
             }
         }
         stage ('Ping to Artifactory') {
             steps {
-               jf rt ping
+               jf 'rt ping'
             }
         }
         stage ('Config Maven'){
             steps {
                 dir('complete'){
-                    jf mvnc --repo-resolve-releases=acme-maven-virtual --repo-resolve-snapshots=acme-maven-virtual --repo-deploy-releases=acme-maven-virtual --repo-deploy-snapshots=acme-maven-virtual
+                    jf 'mvnc --repo-resolve-releases=acme-maven-virtual --repo-resolve-snapshots=acme-maven-virtual --repo-deploy-releases=acme-maven-virtual --repo-deploy-snapshots=acme-maven-virtual'
                 }
             }
         }
@@ -36,27 +36,27 @@ pipeline {
             steps {
                 echo 'Compiling'
                 dir('complete') {
-                    jf mvn clean test-compile -Dcheckstyle.skip -DskipTests
+                    jf 'mvn clean test-compile -Dcheckstyle.skip -DskipTests'
                 }
             }
         }
         stage ('Upload artifact') {
             steps {
                 dir('complete') {
-                    jf mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${BUILD_NAME}" --build-number=${BUILD_ID}
+                    jf 'mvn clean deploy -Dcheckstyle.skip -DskipTests --build-name="${BUILD_NAME}" --build-number=${BUILD_ID}'
                 }
             }
         }
         stage ('Publish build info') {
             steps {
                 // Collect environment variables for the build
-                jf rt bce "${BUILD_NAME}" ${BUILD_ID}
+                jf 'rt bce "${BUILD_NAME}" ${BUILD_ID}'
                 //Collect VCS details from git and add them to the build
-                jf rt bag "${BUILD_NAME}" ${BUILD_ID}
+                jf 'rt bag "${BUILD_NAME}" ${BUILD_ID}'
                 //Publish build info
-                jf rt bp "${BUILD_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}
+                jf 'rt bp "${BUILD_NAME}" ${BUILD_ID} --build-url=${BUILD_URL}'
                 //Promote the build
-                jf rt bpr --status=Development --props="status=Development" "${BUILD_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}
+                jf 'rt bpr --status=Development --props="status=Development" "${BUILD_NAME}" ${BUILD_ID} ${ARTIFACTORY_LOCAL_DEV_REPO}'
             }
         }
     }
