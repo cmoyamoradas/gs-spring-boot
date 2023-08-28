@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        JURL = 'http:/artifactory.artifactory:8082'
-        RT_URL = 'http:/artifactory.artifactory:8082/artifactory'
+        JURL = 'http://artifactory.artifactory:8082'
+        RT_URL = 'http://artifactory.artifactory:8082/artifactory'
         TOKEN = credentials('7ae3e03b-c72b-4a71-9f92-26069898d209')
         ARTIFACTORY_LOCAL_DEV_REPO = 'acme-maven-dev-local'
         SERVER_ID = 'local'
