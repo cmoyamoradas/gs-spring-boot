@@ -1,11 +1,11 @@
 pipeline {
     agent any
     environment {
-        JURL = 'https://soleng.jfrog.io'
-        RT_URL = 'https://soleng.jfrog.io/artifactory'
-        TOKEN = credentials('artifactory-soleng')
-        ARTIFACTORY_LOCAL_DEV_REPO = 'carlosmm-maven-dev-local'
-        SERVER_ID = 'soleng'
+        JURL = 'http://main.jfrog.local'
+        RT_URL = 'http://main.jfrog.local/artifactory'
+        TOKEN = credentials('7ae3e03b-c72b-4a71-9f92-26069898d209')
+        ARTIFACTORY_LOCAL_DEV_REPO = 'acme-maven-dev-local'
+        SERVER_ID = 'local'
         BUILD_NAME = "GS_SPRING_BOOT_main_mvn"
     }
     tools {
@@ -27,7 +27,7 @@ pipeline {
         stage ('Config Maven'){
             steps {
                 dir('complete'){
-                    sh 'jf mvnc --repo-resolve-releases=carlosmm-maven-virtual --repo-resolve-snapshots=carlosmm-maven-virtual --repo-deploy-releases=carlosmm-maven-virtual --repo-deploy-snapshots=carlosmm-maven-virtual'
+                    sh 'jf mvnc --repo-resolve-releases=acme-maven-virtual --repo-resolve-snapshots=acme-maven-virtual --repo-deploy-releases=acme-maven-virtual --repo-deploy-snapshots=acme-maven-virtual'
                 }
             }
         }
